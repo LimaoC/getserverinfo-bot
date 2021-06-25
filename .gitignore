@@ -157,4 +157,7 @@ cython_debug/
 .history
 .ionide
 
+### Extra ###
+.sqlite
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
