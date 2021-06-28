@@ -2,6 +2,7 @@ import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+from webserver import keep_running
 from commands import *
 
 # Load bot token from .env file
@@ -13,4 +14,5 @@ TOKEN = os.environ["TOKEN"]
 async def on_ready():
     print(f"Successfully logged in as {bot.user}")
 
+keep_running()
 bot.run(TOKEN)
