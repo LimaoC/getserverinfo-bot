@@ -3,6 +3,8 @@ GetServerInfo is a Discord bot built in Python that fetches information on Minec
 
 It is designed to be used in small Discord servers with a dedicated Minecraft server, and allows you to get server statistics without needing to open up the server console or log onto Minecraft.
 
+Thank you to https://api.mcsrvstat.us/ for the Minecraft server API!
+
 # Dependencies
 Dependencies that are necessary if you want to run the bot yourself:
 - [discord.py](https://discordpy.readthedocs.io/en/stable/)
@@ -14,3 +16,9 @@ Dependencies that are necessary if you want to run the bot yourself:
 
 # License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+# Roadmap
+- [x] Implement main functionality: fetching information from Minecraft server using ip
+- [ ] Make use of Discord message embeds instead of common messages
+- [ ] Add graphics
+- [ ] Add tests
