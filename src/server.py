@@ -2,11 +2,17 @@
 This file contains a class which stores information about the default Minecraft
 server used by the bot
 """
+import os
 import requests
 import json
 from sqlitedict import SqliteDict
 
 # Accesses bot_settings database
+try:
+    os.mkdir("./db")  # creates the db folder if one does not exist
+except FileExistsError:
+    pass
+
 DB_PATH = "./db/bot_settings.sqlite"
 bot_settings = SqliteDict(DB_PATH, autocommit=True)
 
