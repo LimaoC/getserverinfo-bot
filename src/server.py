@@ -1,10 +1,23 @@
+"""
+This file contains a class which stores information about the default Minecraft
+server used by the bot
+"""
 import requests
 import json
+from sqlitedict import SqliteDict
+
+# Accesses bot_settings database
+DB_PATH = "./db/bot_settings.sqlite"
+bot_settings = SqliteDict(DB_PATH, autocommit=True)
 
 
 class Server:
-    def __init__(self, ip: str):
-        self._ip = ip
+    def __init__(self):
+        """
+        Constructs a Server object with the latest IP stored in the
+        bot_settings database.
+        """
+        self._ip = bot_settings.get("server_ip")
 
     @property
     def server_ip(self) -> str:
@@ -18,6 +31,7 @@ class Server:
         """
         Sets the current server ip to the given ip.
         """
+        bot_settings["server_ip"] = new_ip
         self._ip = new_ip
 
     def get_online_players(self, ip) -> str:
