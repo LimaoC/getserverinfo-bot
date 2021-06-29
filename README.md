@@ -11,6 +11,7 @@ Dependencies that are necessary if you want to run the bot yourself:
 - [discord.ext](https://discordpy.readthedocs.io/en/stable/ext/commands/index.html)
 - [python-dotenv](https://pypi.org/project/python-dotenv/)
 - [requests](https://docs.python-requests.org/en/master/)
+- [sqlitedict](https://pypi.org/project/sqlitedict/)
 - [Flask](https://pypi.org/project/Flask/) (for running the web server)
 
 # Usage
