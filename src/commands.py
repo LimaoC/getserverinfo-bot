@@ -1,11 +1,16 @@
 """
 This file contains the bot commands that users can use
 """
+import discord
 from discord.ext import commands
 from server import *
 
-bot = commands.Bot(command_prefix="!")
+bot = commands.Bot(command_prefix=bot_settings.get("bot_prefix", "!"))
 server = Server()
+
+SUCCESS_MESSAGE = "Success!"
+FAIL_MESSAGE = "Error"
+BOT_NAME = "GetServerInfo"
 
 
 @bot.command(name="setprefix")
@@ -13,35 +18,72 @@ async def set_prefix(ctx, prefix):
     """
     Sets the bot prefix to the given prefix.
     """
+    bot_settings["bot_prefix"] = prefix
     bot.command_prefix = prefix
-    await ctx.send(f"Bot prefix successfully changed to {prefix}.")
+
+    embed = discord.Embed(
+        title=SUCCESS_MESSAGE,
+        description=f"Bot prefix successfully changed to {prefix}.",
+        colour=discord.Color.green()
+    )
+
+    await ctx.send(embed=embed)
 
 
 @bot.command(name="setserverip")
 async def set_default_ip(ctx, ip):
     """
-    Sets the default server IP to use for the bot.
+    Sets the default server IP the bot will use.
     """
     if "." in ip and server.server_ip != ip:
         server.server_ip = ip
-        message = f"Default server IP successfully changed to {ip}."
+        embed = discord.Embed(
+            title=SUCCESS_MESSAGE,
+            description=f"Default server IP successfully changed to {ip}.",
+            colour=discord.Color.green()
+        )
     elif server.server_ip == ip:
-        message = f"Default server IP is already {ip}."
+        embed = discord.Embed(
+            title=FAIL_MESSAGE,
+            description=f"Default server IP is already {ip}.",
+            colour=discord.Color.red()
+        )
     else:
-        message = f"Invalid server IP."
-    await ctx.send(message)
+        embed = discord.Embed(
+            title=FAIL_MESSAGE,
+            description="Invalid server IP.",
+            colour=discord.Color.red()
+        )
+
+    await ctx.send(embed=embed)
 
 
 @bot.command(name="serverip")
 async def get_server_ip(ctx):
     """
-    Gets the current default server IP.
+    Gets the default server IP.
     """
     if server.server_ip:
-        await ctx.send(f"The current default server IP is {server.server_ip}.")
+        file = discord.File(get_server_icon(server.server_ip),
+                            filename="servericon.jpg")
+
+        embed = discord.Embed(
+            description=f"The default server IP is {server.server_ip}.",
+            colour=discord.Color.green()
+        )
+        embed.set_author(name=server.server_ip,
+                         icon_url="attachment://servericon.jpg")
+
+        await ctx.send(file=file, embed=embed)
     else:
-        await ctx.send("There is no current default server IP. You can set one"
-                       f" using {bot.command_prefix}setserverip <server ip>.")
+        embed = discord.Embed(
+            title=FAIL_MESSAGE,
+            description="There is no default server IP. You can set one using "
+                        f"{bot.command_prefix}setserverip <server ip>.",
+            colour=discord.Color.red()
+        )
+
+        await ctx.send(embed=embed)
 
 
 @bot.command(name="resetserverip")
@@ -50,20 +92,41 @@ async def get_server_ip(ctx):
     Resets the default server IP.
     """
     server.server_ip = None
-    await ctx.send("The default server IP has been reset.")
+    await ctx.send(embed=discord.Embed(
+        title=SUCCESS_MESSAGE,
+        description="The default server IP has been reset.",
+        colour=discord.Color.green()
+    ))
 
 
 @bot.command(name="online")
-async def get_online_players(ctx, ip=None):
+async def list_online_players(ctx, ip=None):
     """
-    Gets a list of the players that are online (up to 10 max). A different
-    server ip can be used, if specified.
+    Gets a list of the players that are online, up to 10 max (uses the server
+    IP stored by default).
     """
-    if server.server_ip:
-        await ctx.send(server.get_online_players(ip))
+    if server.server_ip and ip is None:  # use the default IP
+        ip = server.server_ip
+    if ip:
+        file = discord.File(get_server_icon(ip),
+                            filename="servericon.jpg")
+
+        embed = discord.Embed(
+            description=get_online_players(ip),
+            colour=discord.Color.green()
+        )
+        embed.set_author(name=ip,
+                         icon_url="attachment://servericon.jpg")
+        await ctx.send(file=file, embed=embed)
     else:
-        await ctx.send("There is no current default server IP. You can set one"
-                       f" using {bot.command_prefix}setserverip <server ip>.")
+        embed = discord.Embed(
+            title=FAIL_MESSAGE,
+            description="There is no default server IP. You can set one using "
+                        f"{bot.command_prefix}setserverip <server ip>.",
+            colour=discord.Color.red()
+        )
+
+        await ctx.send(embed=embed)
 
 
 if __name__ == "__main__":
