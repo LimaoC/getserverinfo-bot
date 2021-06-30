@@ -22,6 +22,6 @@ Dependencies that are necessary if you want to run the bot yourself:
 # Roadmap
 - [x] Implement main functionality: fetching information from Minecraft server using ip
 - [ ] Implement permission levels for commands
-- [ ] Make use of Discord message embeds instead of common messages
+- [x] Make use of Discord message embeds instead of common messages
 - [ ] Add graphics
 - [ ] Add tests
