@@ -159,5 +159,6 @@ cython_debug/
 
 ### Extra ###
 db/bot_settings.sqlite
+src/img/servericon.jpg
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
