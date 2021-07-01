@@ -2,11 +2,8 @@
 This file contains a class which stores information about the default Minecraft
 server used by the bot
 """
-import os
-import requests
-import json
-import urllib.request
-from sqlitedict import SqliteDict
+from lib import *
+from support import *
 
 # Accesses bot_settings database
 try:
@@ -42,24 +39,26 @@ class Server:
         self._ip = new_ip
 
 
-def get_server_icon(ip) -> str:
+def has_server_icon(ip) -> bool:
     """
-    Returns the path to the server icon (if any).
-    """
-    IMAGE_PATH = "./src/img/servericon.jpg"
+    Checks whether the given server ip has a dedicated icon, and converts the
+    icon to a jpg.
 
+    Returns:
+        (bool): True if server has an icon, and False otherwise.
+    """
     response = requests.get(f"https://api.mcsrvstat.us/2/{ip}")
     json_data = json.loads(response.text)
 
     try:
-        icon = json_data["icon"]
-
         # Convert data URI from API to image
-        with open(IMAGE_PATH, "wb") as image:
-            image.write(urllib.request.urlopen(icon).file.read())
-        return IMAGE_PATH
+        icon = urllib.request.urlopen(json_data["icon"])
+
+        with open(ICON_PATH, "wb") as image:
+            image.write(icon.file.read())
+        return True
     except KeyError:  # server does not have an icon
-        return "./src/img/defaultservericon.png"
+        return False
 
 
 def get_online_players(ip) -> str:

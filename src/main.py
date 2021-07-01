@@ -1,5 +1,4 @@
-import os
-from dotenv import load_dotenv
+from lib import *
 from webserver import keep_running
 from commands import *
 
