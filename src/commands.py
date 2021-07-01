@@ -117,7 +117,7 @@ async def list_online_players(ctx, ip=None):
         embed = discord.Embed(description=get_online_players(ip),
                               colour=discord.Color.green())
         embed.set_author(name=ip,
-                         icon_url=f"attachment://{filename.jpg}")
+                         icon_url=f"attachment://{filename}")
 
         await ctx.send(file=file, embed=embed)
     else:
