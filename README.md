@@ -10,7 +10,7 @@ It is designed to be used in small Discord servers with a dedicated Minecraft se
 
 Thank you to https://api.mcsrvstat.us/ for the Minecraft server API!
 
-# Dependencies
+## Dependencies
 Dependencies that are necessary if you want to run the bot yourself:
 - [discord.py](https://discordpy.readthedocs.io/en/stable/)
 - [discord.ext](https://discordpy.readthedocs.io/en/stable/ext/commands/index.html)
@@ -19,12 +19,12 @@ Dependencies that are necessary if you want to run the bot yourself:
 - [sqlitedict](https://pypi.org/project/sqlitedict/)
 - [Flask](https://pypi.org/project/Flask/) (for running the web server)
 
-# Usage
+## Usage
 
-# License
+## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
-# Roadmap
+## Roadmap
 - [x] Implement main functionality: fetching information from Minecraft server using ip
 - [ ] Implement permission levels for commands
 - [x] Make use of Discord message embeds instead of common messages
