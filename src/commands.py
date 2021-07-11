@@ -30,7 +30,7 @@ async def set_default_ip(ctx, ip):
     """
     Sets the default server IP the bot will use.
     """
-    if "." in ip and server.server_ip != ip:  # valid IP change
+    if "." in ip and server.server_ip != ip:  # valid IP
         server.server_ip = ip
         embed = discord.Embed(
             title=SUCCESS_MESSAGE,
@@ -56,21 +56,13 @@ async def get_server_ip(ctx):
     Gets the default server IP.
     """
     if server.server_ip:
-        if has_server_icon(server.server_ip):
-            image_path = ICON_PATH
-            filename = "servericon.jpg"
-        else:  # use the default server icon
-            image_path = DEFAULT_ICON_PATH
-            filename = "defaultservericon.jpg"
-
-        # Attach the server icon to the embedded message
-        file = discord.File(image_path, filename=filename)
-
         embed = discord.Embed(
             description=f"The default server IP is {server.server_ip}.",
             colour=discord.Color.green())
-        embed.set_author(name=server.server_ip,
-                         icon_url=f"attachment://{filename}")
+
+        # Attach the server icon to the embedded message
+        attach_icon_embed(embed, server.server_ip)
+        file = get_server_icon(server.server_ip)
 
         await ctx.send(file=file, embed=embed)
     else:
@@ -101,23 +93,16 @@ async def list_online_players(ctx, ip=None):
     Gets a list of the players that are online, up to 10 max (uses the server
     IP stored by default).
     """
-    if server.server_ip and ip is None:  # use the default IP
+    # If there is a default IP and no IP was specified, use the default IP
+    if server.server_ip and ip is None:
         ip = server.server_ip
     if ip:
-        if has_server_icon(server.server_ip):
-            image_path = ICON_PATH
-            filename = "servericon.jpg"
-        else:  # use the default server icon
-            image_path = DEFAULT_ICON_PATH
-            filename = "defaultservericon.jpg"
-
-        # Attach the server icon to the embedded message
-        file = discord.File(image_path, filename=filename)
-
         embed = discord.Embed(description=get_online_players(ip),
                               colour=discord.Color.green())
-        embed.set_author(name=ip,
-                         icon_url=f"attachment://{filename.jpg}")
+
+        # Attach the server icon to the embedded message
+        attach_icon_embed(embed, server.server_ip)
+        file = get_server_icon(server.server_ip)
 
         await ctx.send(file=file, embed=embed)
     else:

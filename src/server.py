@@ -39,7 +39,7 @@ class Server:
         self._ip = new_ip
 
 
-def has_server_icon(ip) -> bool:
+def has_server_icon(ip: str) -> bool:
     """
     Checks whether the given server ip has a dedicated icon, and converts the
     icon to a jpg.
@@ -47,7 +47,7 @@ def has_server_icon(ip) -> bool:
     Returns:
         (bool): True if server has an icon, and False otherwise.
     """
-    response = requests.get(f"https://api.mcsrvstat.us/2/{ip}")
+    response = requests.get(f"https://api.mcsrvstat.us/2/{ip}", )
     json_data = json.loads(response.text)
 
     try:
@@ -61,7 +61,7 @@ def has_server_icon(ip) -> bool:
         return False
 
 
-def get_online_players(ip) -> str:
+def get_online_players(ip: str) -> str:
     """
     Returns a message indicating the number of players that are online, and
     a list (up to 10 max) of players that are online.
@@ -90,6 +90,33 @@ def get_online_players(ip) -> str:
         message = f"{ip} is currently offline."
 
     return message
+
+
+def attach_icon_embed(embed: discord.Embed, ip: str) -> None:
+    """
+    Attaches the given server ip's icon (if any) to the given embed.
+    """
+    if has_server_icon(ip):
+        image_path = ICON_PATH
+        filename = "servericon.jpg"
+    else:  # use the default server icon
+        image_path = DEFAULT_ICON_PATH
+        filename = "defaultservericon.jpg"
+
+    # Attach the server icon to the embedded message
+    file = discord.File(image_path, filename=filename)
+    embed.set_author(name=ip, icon_url=f"attachment://{filename}")
+
+
+def get_server_icon(ip: str) -> discord.File:
+    """
+    Returns the server icon for the given IP as a file object.
+    """
+    if has_server_icon(ip):
+        return discord.File(ICON_PATH, filename="servericon.jpg")
+    else:  # use the default server icon
+        return discord.File(DEFAULT_ICON_PATH,
+                            filename="defaultservericon.jpg")
 
 
 if __name__ == "__main__":
